@@ -1,3 +1,3 @@
-export default function forAlert(hello) {
-    alert(hello);
+export default function (hello) {
+  alert(hello);
 }

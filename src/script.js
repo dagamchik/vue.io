@@ -1,3 +1,4 @@
-export const text = 'Приветствуем вас';
-export const name = 'Петров Пётр';
-
+export default {
+  text: 'Приветствуем вас',
+  name: 'Петров Пётр',
+};
