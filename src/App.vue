@@ -64,9 +64,17 @@ export default {
          === this.filterCategoryId));
       }
 
+      // if (this.filterColor) {
+      //   filteredProducts = filteredProducts.filter((product) => (product.colors
+      //   === this.filterColor));
+      // }
       if (this.filterColor) {
-        filteredProducts = filteredProducts.filter((product) => (product.colors
-        === this.filterColor));
+        filteredProducts = filteredProducts.filter((product) => (product.colors.forEach(
+          (el) => {
+            el === this.filterColor;
+          },
+        )
+        ));
       }
 
       return filteredProducts;
