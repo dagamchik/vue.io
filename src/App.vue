@@ -69,11 +69,8 @@ export default {
       //   === this.filterColor));
       // }
       if (this.filterColor) {
-        filteredProducts = filteredProducts.filter((product) => (product.colors.forEach(
-          (el) => {
-            el === this.filterColor;
-          },
-        )
+        filteredProducts = filteredProducts.filter((product) => (
+          product.colors.includes(this.filterColor)
         ));
       }
 
