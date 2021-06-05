@@ -14,7 +14,7 @@
         {{ product.price }} ₽
       </span>
 
-      <ul class="colors colors--black">
+      <!-- <ul class="colors colors--black">
         <li class="colors__item">
           <label class="colors__label">
             <input class="colors__radio sr-only" type="radio"
@@ -39,12 +39,21 @@
             </span>
           </label>
         </li>
+      </ul> -->
+      <ul class="colors colors--black">
+        <li class="colors__item" v-for="colors in product.colors" :key="colors">
+          <label class="colors__label">
+            <input class="colors__radio sr-only" type="radio"
+             :value="colors" v-model="colorDefault">
+            <span class="colors__value" :style="{'background-color': colors}">
+            </span>
+          </label>
+        </li>
       </ul>
     </li>
 </template>
 
 <script>
-
 export default {
   data() {
     return {
