@@ -64,10 +64,6 @@ export default {
          === this.filterCategoryId));
       }
 
-      // if (this.filterColor) {
-      //   filteredProducts = filteredProducts.filter((product) => (product.colors
-      //   === this.filterColor));
-      // }
       if (this.filterColor) {
         filteredProducts = filteredProducts.filter((product) => (
           product.colors.includes(this.filterColor)
