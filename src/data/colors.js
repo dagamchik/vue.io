@@ -1,23 +1,30 @@
 export default [
   {
-    blueColor: '#73B6EA',
+    id: 1,
+    color: '#73B6EA',
   },
   {
-    yellowColor: '#FFBE15',
+    id: 2,
+    color: '#FFBE15',
   },
   {
-    grayColor: '#939393',
+    id: 3,
+    color: '#939393',
   },
   {
-    lightGreenColor: '#8BE000',
+    id: 4,
+    color: '#8BE000',
   },
   {
-    orangeColor: '#FF6B00',
+    id: 5,
+    color: '#FF6B00',
   },
   {
-    whiteColor: '#FFFFFF',
+    id: 6,
+    color: '#FFFFFF',
   },
   {
-    blackColor: '#000',
+    id: 7,
+    color: '#000',
   },
 ];

@@ -10,8 +10,12 @@
     </div>
 
     <div class="content__catalog">
-    <ProductFilter :price-from.sync="filterPriceFrom" :price-to.sync="filterPriceTo"
-     :category-id.sync="filterCategoryId"/>
+    <ProductFilter
+    :price-from.sync="filterPriceFrom"
+    :price-to.sync="filterPriceTo"
+    :category-id.sync="filterCategoryId"
+    :color.sync="filterColor"
+    />
 
       <section class="catalog">
         <ProductList :products="products"/>
@@ -38,6 +42,7 @@ export default {
       filterCategoryId: 0,
       page: 1,
       productsPerPage: 3,
+      filterColor: '',
     };
   },
   computed: {
@@ -57,6 +62,11 @@ export default {
       if (this.filterCategoryId) {
         filteredProducts = filteredProducts.filter((product) => (product.categoryId
          === this.filterCategoryId));
+      }
+
+      if (this.filterColor) {
+        filteredProducts = filteredProducts.filter((product) => (product.colors
+        === this.filterColor));
       }
 
       return filteredProducts;
