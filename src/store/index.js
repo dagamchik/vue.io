@@ -46,7 +46,8 @@ export default new Vuex.Store({
        + acc, 0);
     },
     cartTotalProducts(state) {
-      return state.cartProducts.length;
+      const item = state.cartProducts.find((items) => (items.amount));
+      return item.amount;
     },
   },
 });

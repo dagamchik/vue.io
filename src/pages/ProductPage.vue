@@ -117,7 +117,7 @@
                   </svg>
                 </button>
 
-                <input type="text" v-model.number="productAmount">
+                <input type="text" v-model.number="productAmount" disabled>
 
                 <button type="button" aria-label="Добавить один товар"
                 @click.prevent="productAmount += 1" style="cursor: pointer">

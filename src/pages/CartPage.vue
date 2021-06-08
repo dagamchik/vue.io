@@ -21,10 +21,7 @@
         {{ totalCount }} товар
       </span>
       <span class="content__info" v-else-if="totalCount >= 2">
-        {{ totalCount }} товара
-      </span>
-      <span class="content__info" v-else-if="totalCount >= 5">
-        {{ totalCount }} товаров
+        {{ totalCount }} товара(ов)
       </span>
     </div>
 
