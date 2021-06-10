@@ -51,7 +51,7 @@ import numberFormat from '@/helpers/numberFormat';
 import { mapMutations } from 'vuex';
 
 export default {
-  filters: numberFormat,
+  filters: { numberFormat },
   props: ['item'],
   computed: {
     amount: {

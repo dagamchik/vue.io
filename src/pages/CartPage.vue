@@ -56,7 +56,7 @@ import { mapGetters } from 'vuex';
 import CartItem from '@/components/CartItem.vue';
 
 export default {
-  filters: numberFormat,
+  filters: { numberFormat },
   components: { CartItem },
   computed: {
     ...mapGetters({ products: 'cartDetailProducts', totalPrice: 'cartTotalPrice', totalCount: 'cartTotalProducts' }),
