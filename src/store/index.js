@@ -42,7 +42,10 @@ export default new Vuex.Store({
         === item.productId);
         return {
           ...item,
-          product: { image: product[0].product.image.file.url },
+          product: {
+            image: product[0].product.image.file.url,
+            price: product[0].product.price,
+          },
         };
       });
     },
@@ -50,10 +53,10 @@ export default new Vuex.Store({
       return getters.cartDetailProducts.reduce((acc, item) => (item.product.price * item.amount)
        + acc, 0);
     },
-    cartTotalProducts(state) {
-      const item = state.cartProducts.find((items) => (items.amount));
-      return item.amount;
-    },
+    // cartTotalProducts(state) {
+    //   const item = state.cartProductsData.find((items) => (items.amount));
+    //   return item.amount;
+    // },
   },
   actions: {
     loadCart(context) {
@@ -75,7 +78,7 @@ export default new Vuex.Store({
     addProductToCart(context, { productId, amount }) {
       return (new Promise((resolve) => setTimeout(resolve, 2000)))
         .then(() => {
-          return axios
+          axios
             .post(`${API_BASE_URL}/api/baskets/products`, {
               productId,
               quantity: amount,
@@ -88,7 +91,27 @@ export default new Vuex.Store({
               context.commit('updateCartProductsData', response.data.items);
               context.commit('syncCartProducts');
             });
+          return axios;
         });
+    },
+    updateCartProductAmount(context, { productId, amount }) {
+      context.commit('updateCartProductAmount', { productId, amount });
+      axios
+        .put(`${API_BASE_URL}/api/baskets/products`, {
+          productId,
+          quantity: amount,
+        }, {
+          params: {
+            userAccessKey: context.state.userAccessKey,
+          },
+        })
+        .then((response) => {
+          context.commit('updateCartProductsData', response.data.items);
+        })
+        .catch(() => {
+          context.commit('syncCartProducts');
+        });
+      return axios;
     },
   },
 });
