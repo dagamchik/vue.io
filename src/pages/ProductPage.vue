@@ -23,11 +23,10 @@
         </li>
       </ul>
     </div>
-
     <section class="item">
       <div class="item__pics pics">
         <div class="pics__wrapper">
-          <img width="570" height="570" :src="product.image"
+          <img width="570" height="570" :src="product.image.file.url"
           :alt="product.title">
         </div>
       </div>
@@ -72,7 +71,7 @@
               </ul>
             </fieldset>
 
-            <fieldset class="form__block">
+            <fieldset class="form__block" v-if="category.title === 'Телефоны'">
               <legend class="form__legend">Объемб в ГБ:</legend>
 
               <ul class="sizes sizes--primery">
@@ -135,6 +134,7 @@
                 В корзину
               </button>
             </div>
+            <div><EllipsisLoader v-if="loading" :color="'#54f1d2'" :loading="loading"/></div>
             <div v-show="productAdded">Товар добавлен в корзину</div>
             <div v-show="productAddSending">Добавляем товар в корзину...</div>
           </form>
@@ -216,6 +216,7 @@ import axios from 'axios';
 import gotoPage from '@/helpers/gotoPage';
 import numberFormat from '@/helpers/numberFormat';
 import { mapActions } from 'vuex';
+import EllipsisLoader from '@/preloader/preloader.vue';
 import API_BASE_URL from '../config';
 
 export default {
@@ -227,7 +228,11 @@ export default {
       productLoadingFailed: false,
       productAdded: false,
       productAddSending: false,
+      loading: false,
     };
+  },
+  components: {
+    EllipsisLoader,
   },
   filters: {
     numberFormat,
@@ -246,15 +251,18 @@ export default {
     gotoPage,
     addToCart() {
       this.productAdded = false;
+      this.loading = true;
       this.productAddSending = true;
       this.addProductToCart({ productId: this.product.id, amount: this.productAmount })
         .then(() => {
           this.productAdded = true;
           this.productAddSending = false;
+          this.loading = false;
         });
     },
     loadProduct() {
       this.productLoading = true;
+      this.loading = true;
       this.productLoadingFailed = false;
       axios.get(`${API_BASE_URL}/api/products/${this.$route.params.id}`)
         .then((response) => {
@@ -265,6 +273,7 @@ export default {
         })
         .then(() => {
           this.productLoading = false;
+          this.loading = false;
         });
     },
   },

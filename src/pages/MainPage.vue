@@ -14,11 +14,10 @@
     :price-from.sync="filterPriceFrom"
     :price-to.sync="filterPriceTo"
     :category-id.sync="filterCategoryId"
-    :color.sync="filterColor"
+    :colorId.sync="filterColor"
     />
-
       <section class="catalog">
-        <div v-if="productsLoading">Загрузка товаров...</div>
+        <div><EllipsisLoader v-if="loading" :color="'#54f1d2'" :loading="loading"/></div>
         <div v-if="productsLoadingFailed">Произошла ошибка при загрузке товаров
           <button @click.prevent="loadProducts">Попробовать еще раз</button></div>
         <ProductList :products="products"/>
@@ -33,10 +32,13 @@ import ProductList from '@/components/ProductList.vue';
 import BasePagination from '@/components/BasePagination.vue';
 import ProductFilter from '@/components/ProductFilter.vue';
 import axios from 'axios';
+import EllipsisLoader from '@/preloader/preloader.vue';
 import API_BASE_URL from '../config';
 
 export default {
-  components: { ProductList, BasePagination, ProductFilter },
+  components: {
+    ProductList, BasePagination, ProductFilter, EllipsisLoader,
+  },
   data() {
     return {
       filterPriceFrom: 0,
@@ -44,10 +46,10 @@ export default {
       filterCategoryId: 0,
       page: 1,
       productsPerPage: 3,
-      filterColor: '',
+      filterColor: null,
       productsData: null,
-      productsLoading: false,
       productsLoadingFailed: false,
+      loading: false,
     };
   },
   computed: {
@@ -66,7 +68,7 @@ export default {
   },
   methods: {
     loadProducts() {
-      this.productsLoading = true;
+      this.loading = true;
       this.productsLoadingFailed = false;
       clearTimeout(this.loadProductsTimer);
       this.loadProductsTimer = setTimeout(() => {
@@ -78,6 +80,7 @@ export default {
               categoryId: this.filterCategoryId,
               minPrice: this.filterPriceFrom,
               maxPrice: this.filterPriceTo,
+              colorId: this.filterColor,
             },
           })
           .then((response) => {
@@ -87,7 +90,7 @@ export default {
             this.productsLoadingFailed = true;
           })
           .then(() => {
-            this.productsLoading = false;
+            this.loading = false;
           });
       }, 2000);
     },
@@ -103,6 +106,9 @@ export default {
       this.loadProducts();
     },
     filterCategoryId() {
+      this.loadProducts();
+    },
+    filterColor() {
       this.loadProducts();
     },
   },

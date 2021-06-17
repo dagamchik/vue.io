@@ -29,21 +29,19 @@
           </select>
         </label>
       </fieldset>
-
       <fieldset class="form__block">
         <legend class="form__legend">Цвет</legend>
         <ul class="colors">
-          <li class="colors__item" v-for="color in colors" :key="color.id">
+          <li class="colors__item" v-for="color in colorsData.items" :key="color.id">
             <label class="colors__label">
               <input class="colors__radio sr-only" type="radio" name="color"
-              v-model="filterColor" :value="color.color" checked="">
-              <span class="colors__value" :style="{'background-color': color.color}">
+              v-model="colorCategory" :value="color.title" checked="">
+              <span class="colors__value" :style="{'background-color': color.code}">
               </span>
             </label>
           </li>
         </ul>
       </fieldset>
-
       <fieldset class="form__block">
         <legend class="form__legend">Объемб в ГБ</legend>
         <ul class="check-list">
@@ -106,7 +104,6 @@
           </li>
         </ul>
       </fieldset>
-
       <button class="filter__submit button button--primery" type="submit">
         Применить
       </button>
@@ -120,7 +117,6 @@
 <script>
 import axios from 'axios';
 import API_BASE_URL from '../config';
-import colors from '../data/colors';
 
 export default {
   data() {
@@ -128,15 +124,18 @@ export default {
       currentPriceFrom: 0,
       currentPriceTo: 0,
       currentCategoryId: 0,
-      filterColor: '',
-      colors,
+      colorCategory: null,
       categoriesData: null,
+      colorsData: null,
     };
   },
-  props: ['priceFrom', 'priceTo', 'categoryId', 'color'],
+  props: ['priceFrom', 'priceTo', 'categoryId', 'colorId'],
   computed: {
     categories() {
       return this.categoriesData ? this.categoriesData.items : [];
+    },
+    colors() {
+      return this.colorsData ? this.colorsData.items : [];
     },
   },
   watch: {
@@ -149,8 +148,8 @@ export default {
     categoryId(value) {
       this.currentCategoryId = value;
     },
-    filterColor(value) {
-      this.filterColor = value;
+    colorId(value) {
+      this.colorCategory = value;
     },
   },
   methods: {
@@ -158,13 +157,13 @@ export default {
       this.$emit('update:priceFrom', this.currentPriceFrom);
       this.$emit('update:priceTo', this.currentPriceTo);
       this.$emit('update:categoryId', this.currentCategoryId);
-      this.$emit('update:color', this.filterColor);
+      this.$emit('update:colorId', this.colorCategory);
     },
     reset() {
       this.$emit('update:priceFrom', 0);
       this.$emit('update:priceTo', 0);
       this.$emit('update:categoryId', 0);
-      this.$emit('update:color', '');
+      this.$emit('update:colorId', null);
     },
     loadCategories() {
       axios.get(`${API_BASE_URL}/api/productCategories`)
@@ -172,9 +171,16 @@ export default {
           this.categoriesData = response.data;
         });
     },
+    loadColors() {
+      axios.get(`${API_BASE_URL}/api/colors`)
+        .then((response) => {
+          this.colorsData = response.data;
+        });
+    },
   },
   created() {
     this.loadCategories();
+    this.loadColors();
   },
 };
 </script>

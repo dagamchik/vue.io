@@ -38,7 +38,7 @@
     </b>
 
     <button class="product__del button-del" type="button"
-    aria-label="Удалить товар из корзины" @click.prevent="deleteProduct(item.productId)">
+    aria-label="Удалить товар из корзины" @click.prevent="deleteFromCart">
       <svg width="20" height="20" fill="currentColor">
         <use xlink:href="#icon-close"></use>
       </svg>
@@ -48,9 +48,16 @@
 
 <script>
 import numberFormat from '@/helpers/numberFormat';
-import { mapMutations } from 'vuex';
+import { mapActions } from 'vuex';
+import axios from 'axios';
+import API_BASE_URL from '../config';
 
 export default {
+  data() {
+    return {
+      productData: null,
+    };
+  },
   filters: { numberFormat },
   props: ['item'],
   computed: {
@@ -61,10 +68,22 @@ export default {
       set(value) {
         this.$store.dispatch('updateCartProductAmount', { productId: this.item.productId, amount: value });
       },
+      product() {
+        return this.productData;
+      },
     },
   },
   methods: {
-    ...mapMutations({ deleteProduct: 'deleteCartProduct' }),
+    ...mapActions(['deleteCartProductData']),
+    deleteFromCart() {
+      this.deleteCartProductData({ productId: this.item.productId });
+    },
+    loadProduct() {
+      axios.get(`${API_BASE_URL}/api/products/`)
+        .then((response) => {
+          this.productData = response.data;
+        });
+    },
   },
 };
 </script>

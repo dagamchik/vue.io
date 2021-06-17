@@ -24,16 +24,16 @@
         {{ totalCount }} товара(ов)
       </span>
     </div>
-
     <section class="cart">
+      <div><EllipsisLoader v-if="loading" :color="'#54f1d2'" :loading="loading"/></div>
       <form class="cart__form form" action="#" method="POST">
         <div class="cart__field">
-          <ul class="cart__list">
+          <ul class="cart__list" v-if="loading === false">
             <CartItem v-for="item in products" :key="item.productId" :item="item"/>
           </ul>
         </div>
 
-        <div class="cart__block">
+        <div class="cart__block" v-if="loading === false">
           <p class="cart__desc">
             Мы&nbsp;посчитаем стоимость доставки на&nbsp;следующем этапе
           </p>
@@ -53,13 +53,31 @@
 <script>
 import numberFormat from '@/helpers/numberFormat';
 import { mapGetters } from 'vuex';
+import EllipsisLoader from '@/preloader/preloader.vue';
 import CartItem from '@/components/CartItem.vue';
 
 export default {
   filters: { numberFormat },
-  components: { CartItem },
+  components: { CartItem, EllipsisLoader },
+  data() {
+    return {
+      loading: false,
+    };
+  },
+  methods: {
+    loadCart() {
+      this.loading = true;
+      clearTimeout(this.loadCartProducts);
+      this.loadCartProducts = setTimeout(() => {
+        this.loading = false;
+      }, 2000);
+    },
+  },
   computed: {
     ...mapGetters({ products: 'cartDetailProducts', totalPrice: 'cartTotalPrice', totalCount: 'cartTotalProducts' }),
+  },
+  created() {
+    this.loadCart();
   },
 };
 </script>
