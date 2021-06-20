@@ -85,7 +85,6 @@ export default {
           })
           .then((response) => {
             this.productsData = response.data;
-            console.log(response.data);
           })
           .catch(() => {
             this.productsLoadingFailed = true;

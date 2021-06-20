@@ -32,7 +32,7 @@
       <fieldset class="form__block">
         <legend class="form__legend">Цвет</legend>
         <ul class="colors">
-          <li class="colors__item" v-for="color in colorsData.items" :key="color.id">
+          <li class="colors__item" v-for="color in colorsData" :key="color.id">
             <label class="colors__label">
               <input class="colors__radio sr-only" type="radio" name="color"
               v-model="colorCategory" :value="color.title" checked="">
@@ -126,7 +126,7 @@ export default {
       currentCategoryId: 0,
       colorCategory: null,
       categoriesData: null,
-      colorsData: null,
+      colorsData: [],
     };
   },
   props: ['priceFrom', 'priceTo', 'categoryId', 'colorId'],
@@ -135,6 +135,7 @@ export default {
       return this.categoriesData ? this.categoriesData.items : [];
     },
     colors() {
+      console.log(this.colorsData);
       return this.colorsData ? this.colorsData.items : [];
     },
   },
@@ -174,7 +175,7 @@ export default {
     loadColors() {
       axios.get(`${API_BASE_URL}/api/colors`)
         .then((response) => {
-          this.colorsData = response.data;
+          this.colorsData = response.data.items;
         });
     },
   },
