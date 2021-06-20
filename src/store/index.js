@@ -50,10 +50,9 @@ export default new Vuex.Store({
       return getters.cartDetailProducts.reduce((acc, item) => (item.product.price * item.amount)
        + acc, 0);
     },
-    // cartTotalProducts(state) {
-    //   const item = state.cartProductsData.find((items) => (items.amount));
-    //   return item.amount;
-    // },
+    cartTotalProducts(state) {
+      return state.cartProductsData.reduce((acc, item) => (acc + item.quantity), 0);
+    },
   },
   actions: {
     loadCart(context) {
@@ -111,12 +110,14 @@ export default new Vuex.Store({
       return axios;
     },
     deleteCartProductData(context, { productId }) {
+      console.log(productId, context.state.userAccessKey);
       axios
         .delete(`${API_BASE_URL}/api/baskets/products`, {
-          productId,
-        }, {
           params: {
             userAccessKey: context.state.userAccessKey,
+          },
+          data: {
+            productId,
           },
         })
         .then((response) => {
