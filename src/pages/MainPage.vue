@@ -14,7 +14,7 @@
     :price-from.sync="filterPriceFrom"
     :price-to.sync="filterPriceTo"
     :category-id.sync="filterCategoryId"
-    :colorId.sync="filterColor"
+    :color-id.sync="filterColor"
     />
       <section class="catalog">
         <div><EllipsisLoader v-if="loading" :color="'#54f1d2'" :loading="loading"/></div>
@@ -46,7 +46,7 @@ export default {
       filterCategoryId: 0,
       page: 1,
       productsPerPage: 3,
-      filterColor: null,
+      filterColor: 0,
       productsData: null,
       productsLoadingFailed: false,
       loading: false,

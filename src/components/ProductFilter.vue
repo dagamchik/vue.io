@@ -35,7 +35,7 @@
           <li class="colors__item" v-for="color in colorsData" :key="color.id">
             <label class="colors__label">
               <input class="colors__radio sr-only" type="radio" name="color"
-              v-model="colorCategory" :value="color.title" checked="">
+              v-model="colorCategory" :value="color.id" checked="">
               <span class="colors__value" :style="{'background-color': color.code}">
               </span>
             </label>
@@ -124,7 +124,7 @@ export default {
       currentPriceFrom: 0,
       currentPriceTo: 0,
       currentCategoryId: 0,
-      colorCategory: null,
+      colorCategory: 0,
       categoriesData: null,
       colorsData: [],
     };
@@ -135,7 +135,6 @@ export default {
       return this.categoriesData ? this.categoriesData.items : [];
     },
     colors() {
-      console.log(this.colorsData);
       return this.colorsData ? this.colorsData.items : [];
     },
   },
@@ -164,7 +163,7 @@ export default {
       this.$emit('update:priceFrom', 0);
       this.$emit('update:priceTo', 0);
       this.$emit('update:categoryId', 0);
-      this.$emit('update:colorId', null);
+      this.$emit('update:colorId', 0);
     },
     loadCategories() {
       axios.get(`${API_BASE_URL}/api/productCategories`)
