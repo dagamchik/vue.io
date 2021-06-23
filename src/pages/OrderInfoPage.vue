@@ -89,7 +89,8 @@
 
           <div class="cart__total">
             <p>Доставка: <b>500 ₽</b></p>
-            <p>Итого: <b>3</b> товара на сумму <b>37 970 ₽</b></p>
+            <p>Итого: <b v-bind="totalCount()">{{ totalC }}</b>
+            товара(ов) на сумму <b> {{ totalPrice }} ₽</b></p>
           </div>
         </div>
       </form>
@@ -98,7 +99,27 @@
 </template>
 
 <script>
+
 export default {
+  computed: {
+    totalPrice() {
+      return this.$store.state.orderInfo.totalPrice;
+    },
+  },
+  methods: {
+    totalCount() {
+      this.totalC = 0;
+      console.log(this.$store.state.orderInfo);
+      return this.$store.state.orderInfo.basket.items.forEach((item) => {
+        this.totalC += item.quantity;
+      });
+    },
+  },
+  data() {
+    return {
+      totalC: 0,
+    };
+  },
   created() {
     if (this.$store.state.orderInfo && this.$store.state.orderInfo.id === this.$route.params.id) {
       return;
